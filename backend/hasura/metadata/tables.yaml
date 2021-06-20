@@ -1,1 +1,21 @@
-[]
+- table:
+    schema: public
+    name: ingredient
+- table:
+    schema: public
+    name: unit
+  select_permissions:
+  - role: public
+    permission:
+      columns:
+      - id
+      - plural
+      - singular
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - plural
+      - singular
+      filter: {}
