@@ -1,0 +1,13 @@
+{
+  "name": "hasura-pre-token-generation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.77",
+    "typescript": "^4.3.4"
+  }
+}
