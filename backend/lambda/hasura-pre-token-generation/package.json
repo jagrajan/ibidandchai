@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "package": "cd dist && zip lambda.zip index.js"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.77",
