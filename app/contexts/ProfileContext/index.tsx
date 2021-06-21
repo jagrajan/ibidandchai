@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Role } from '../../types/Role';
 
 const ID_TOKEN_KEY = 'id_token';
+const ACTIVE_ROLE_KEY = 'active_role';
 
 interface Payload {
   sub: string;
@@ -58,7 +59,7 @@ function useProfileState(): ProfileState {
   }
 
   function loadUser(payload: Payload) {
-    setActiveRole(Role.user);
+    setActiveRole(localStorage.getItem(ACTIVE_ROLE_KEY) as Role || Role.user);
     // Cognito automatically creates groups for google oauth users
     const otherGroups = (payload['cognito:groups'] || []).filter((role) => Object.values(Role).includes(role));
     setAvailableRoles([Role.public, Role.user, ...otherGroups])
@@ -70,6 +71,10 @@ function useProfileState(): ProfileState {
       login(token);
     }
   }, [])
+
+  useEffect(() => {
+    localStorage.setItem(ACTIVE_ROLE_KEY, activeRole);
+  }, [activeRole])
 
   return useMemo(() => ({
     activeRole,
