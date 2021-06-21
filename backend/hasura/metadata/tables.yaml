@@ -1,6 +1,21 @@
 - table:
     schema: public
     name: ingredient
+  select_permissions:
+  - role: public
+    permission:
+      columns:
+      - id
+      - plural
+      - singular
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - plural
+      - singular
+      filter: {}
 - table:
     schema: public
     name: unit
