@@ -1,17 +1,17 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
-import { Option } from '../../../types/Option';
-import { classNames } from '../../../utils/css';
+import { Option } from '../../../types/Option'
+import { classNames } from '../../../utils/css'
 
 interface SelectProps {
-  label: string;
-  options: Option[];
-  selected?: Option;
-  onChange: (option: Option) => void;
+  label: string
+  options: Option[]
+  selected?: Option
+  onChange: (option: Option) => void
 }
 
-const Select: React.FC<SelectProps> = ({ label, options, selected, onChange}) => {
+const Select: React.FC<SelectProps> = ({ label, options, selected, onChange }) => {
   return (
     <Listbox value={selected} onChange={onChange}>
       {({ open }) => (
@@ -76,4 +76,4 @@ const Select: React.FC<SelectProps> = ({ label, options, selected, onChange}) =>
   )
 }
 
-export default Select;
+export default Select

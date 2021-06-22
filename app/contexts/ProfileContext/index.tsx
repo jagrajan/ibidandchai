@@ -1,24 +1,24 @@
-import decode from 'jwt-decode';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Role } from '../../types/Role';
+import decode from 'jwt-decode'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { Role } from '../../types/Role'
 
-const ID_TOKEN_KEY = 'id_token';
-const ACTIVE_ROLE_KEY = 'active_role';
+const ID_TOKEN_KEY = 'id_token'
+const ACTIVE_ROLE_KEY = 'active_role'
 
 interface Payload {
-  sub: string;
-  'cognito:groups'?: Role[];
-  exp: number;
+  sub: string
+  'cognito:groups'?: Role[]
+  exp: number
 }
 
 interface ProfileState {
-  activeRole: Role;
-  setActiveRole: (role: Role) => void;
-  availableRoles: Role[];
-  isLoggedIn: boolean;
-  login: (token: string) => boolean;
-  logout: () => void;
-  loadUser: (payload: Payload) => void;
+  activeRole: Role
+  setActiveRole: (role: Role) => void
+  availableRoles: Role[]
+  isLoggedIn: boolean
+  login: (token: string) => boolean
+  logout: () => void
+  loadUser: (payload: Payload) => void
 }
 
 const defaultProfileState: ProfileState = {
@@ -32,68 +32,71 @@ const defaultProfileState: ProfileState = {
 }
 
 function useProfileState(): ProfileState {
-  const [activeRole, setActiveRole] = useState(defaultProfileState.activeRole);
-  const [availableRoles, setAvailableRoles] = useState(defaultProfileState.availableRoles);
+  const [activeRole, setActiveRole] = useState(defaultProfileState.activeRole)
+  const [availableRoles, setAvailableRoles] = useState(defaultProfileState.availableRoles)
 
-  function logout() {
-    localStorage.removeItem(ID_TOKEN_KEY);
-    setAvailableRoles(defaultProfileState.availableRoles);
-    setActiveRole(defaultProfileState.activeRole);
+  function logout(): void {
+    localStorage.removeItem(ID_TOKEN_KEY)
+    setAvailableRoles(defaultProfileState.availableRoles)
+    setActiveRole(defaultProfileState.activeRole)
   }
 
-  function login(token: string) {
+  function login(token: string): boolean {
     try {
-      const payload = decode(token) as Payload;
+      const payload = decode(token) as Payload
       if (new Date(payload.exp * 1000) < new Date()) {
-        logout();
-        return false;
+        logout()
+        return false
       } else {
-        localStorage.setItem(ID_TOKEN_KEY, token);
-        loadUser(payload);
-        return true;
+        localStorage.setItem(ID_TOKEN_KEY, token)
+        loadUser(payload)
+        return true
       }
     } catch (e) {
-      logout();
-      return false;
+      logout()
+      return false
     }
   }
 
-  function loadUser(payload: Payload) {
-    setActiveRole(localStorage.getItem(ACTIVE_ROLE_KEY) as Role || Role.user);
+  function loadUser(payload: Payload): void {
+    setActiveRole((localStorage.getItem(ACTIVE_ROLE_KEY) as Role) || Role.user)
     // Cognito automatically creates groups for google oauth users
-    const otherGroups = (payload['cognito:groups'] || []).filter((role) => Object.values(Role).includes(role));
+    const otherGroups = (payload['cognito:groups'] || []).filter((role) => Object.values(Role).includes(role))
     setAvailableRoles([Role.public, Role.user, ...otherGroups])
   }
 
   useEffect(() => {
-    const token = localStorage.getItem(ID_TOKEN_KEY);
+    const token = localStorage.getItem(ID_TOKEN_KEY)
     if (token) {
-      login(token);
+      login(token)
     }
-  }, [])
+  }, []) //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    localStorage.setItem(ACTIVE_ROLE_KEY, activeRole);
+    localStorage.setItem(ACTIVE_ROLE_KEY, activeRole)
   }, [activeRole])
 
-  return useMemo(() => ({
-    activeRole,
-    setActiveRole,
-    availableRoles,
-    isLoggedIn: availableRoles.length > 1,
-    login,
-    logout,
-    loadUser,
-  }), [activeRole]);
+  return useMemo(
+    () => ({
+      activeRole,
+      setActiveRole,
+      availableRoles,
+      isLoggedIn: availableRoles.length > 1,
+      login,
+      logout,
+      loadUser,
+    }),
+    [activeRole] //eslint-disable-line react-hooks/exhaustive-deps
+  )
 }
 
-const ProfileContext = React.createContext<ProfileState>(defaultProfileState);
+const ProfileContext = React.createContext<ProfileState>(defaultProfileState)
 
 export const ProfileProvider: React.FC = ({ children }) => {
-  const value = useProfileState();
+  const value = useProfileState()
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
 }
 
-export function useProfile() {
-  return useContext(ProfileContext);
+export function useProfile(): ProfileState {
+  return useContext(ProfileContext)
 }

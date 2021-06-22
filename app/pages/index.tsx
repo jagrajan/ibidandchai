@@ -1,12 +1,11 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import NavBar from '../components/layout/NavBar';
-import styles from '../styles/Home.module.css'
+import NavBar from '../components/layout/NavBar'
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <div>
       <NavBar />
     </div>
   )
 }
+
+export default Home
