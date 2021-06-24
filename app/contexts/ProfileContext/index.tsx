@@ -86,7 +86,7 @@ function useProfileState(): ProfileState {
       logout,
       loadUser,
     }),
-    [activeRole] //eslint-disable-line react-hooks/exhaustive-deps
+    [activeRole, activeRole, availableRoles.length] //eslint-disable-line react-hooks/exhaustive-deps
   )
 }
 
