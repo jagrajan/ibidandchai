@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Popover, Transition } from '@headlessui/react'
+import Head from 'next/head'
 import React, { Fragment } from 'react'
 import { useForm } from 'react-hook-form'
 import DashboardLayout from '../../../components/layout/Dashboard'
@@ -35,6 +36,9 @@ const Dashboard: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <Head>
+        <title>Ingredients</title>
+      </Head>
       <HeaderWithActions title="Ingredients">
         <Popover className="relative">
           {({ open }) => (
