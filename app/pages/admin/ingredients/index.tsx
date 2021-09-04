@@ -5,13 +5,28 @@ import React, { Fragment } from 'react'
 import { useForm } from 'react-hook-form'
 import DashboardLayout from '../../../components/layout/Dashboard'
 import HeaderWithActions from '../../../components/layout/Header/HeaderWithActions'
+import Table, { Column } from '../../../components/ui/Table'
 import {
   buildIngredientQuery,
   buildInsertIngredientOneMutation,
+  Ingredient,
   IngredientQueryResponse,
   InsertIngredientOnePayload,
   InsertIngredientOneResponse,
 } from '../../../types/graphql/Ingredient'
+
+const columns: Column<Partial<Ingredient>>[] = [
+  {
+    id: 'singular',
+    name: 'Singluar',
+    accessor: 'singular',
+  },
+  {
+    id: 'plural',
+    name: 'Plural',
+    accessor: 'plural',
+  },
+]
 
 const Dashboard: React.FC = () => {
   const { register, handleSubmit, reset: resetForm, setFocus } = useForm<InsertIngredientOnePayload>()
@@ -102,30 +117,7 @@ const Dashboard: React.FC = () => {
           )}
         </Popover>
       </HeaderWithActions>
-      <div className="hidden mt-8 sm:block">
-        <div className="align-middle inline-block min-w-full border-b border-gray-200">
-          <table className="min-w-full">
-            <thead>
-              <tr className="border-t border-gray-200">
-                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Singular
-                </th>
-                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Plural
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-100">
-              {(data?.ingredient || []).map((ingredient) => (
-                <tr key={ingredient.id}>
-                  <td className="px-6 py-3 text-sm font-medium text-gray-900">{ingredient.singular}</td>
-                  <td className="px-6 py-3 text-sm font-medium text-gray-900">{ingredient.plural}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Table columns={columns} data={data?.ingredient} />
     </DashboardLayout>
   )
 }
