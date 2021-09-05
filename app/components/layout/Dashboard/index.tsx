@@ -8,7 +8,7 @@ import ProfileMenu from '../NavBar/ProfileMenu'
 const navigation = [
   { id: 'home', path: '/', label: 'Home' },
   { id: 'dashboard', path: '/admin/dashboard', label: 'Dashboard' },
-  { id: 'recipes', path: '/admin/recipes', label: 'Recipes' },
+  { id: 'recipes', path: '/admin/recipe', label: 'Recipes' },
   { id: 'ingredients', path: '/admin/ingredients', label: 'Ingredients' },
   { id: 'units', path: '/admin/units', label: 'Units' },
 ]
